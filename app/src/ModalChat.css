@@ -1,0 +1,215 @@
+/* Modal container */
+.modal-chat {
+  display: flex;
+  align-items: stretch;
+  position: fixed;
+  bottom: 0; /* Stick to the bottom of the screen */
+  right: 0;
+  width: 100%;
+  max-width: 400px; /* Limit max width for the chat window */
+  height: 97%; /* Adjust as needed */
+  transition: transform 0.2s ease; /* Transition for sliding */
+  transform: translateY(100%); /* Start off-screen (bottom) */
+  z-index: 1000;
+}
+
+/* When modal is open, slide it up */
+.modal-chat.open {
+  transform: translateY(0); /* Slide it into view */
+}
+
+/* Modal chat content */
+.modal-chat-content-tranparent {
+  flex: 1;
+  background: #FBFEFF;
+  border: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.6);
+  border-radius: 44px;
+  margin-right: 10px
+}
+
+/* Chat header */
+.chat-header {
+  height: 44px;
+  border: 0;
+  border-top-left-radius: 48px;
+  border-top-right-radius: 48px;
+  color: white;
+  padding: 0 14px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 25px;
+}
+
+/* Close button */
+.close-button, .apps-button {
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px;
+  margin-left: 16px;
+  background: none;
+  color: white;
+  cursor: pointer;
+}
+
+.close-button img, .apps-button img {
+    width: 16px;
+    height: 16px;
+}
+
+.close-button:hover, .apps-button:hover {
+  opacity: 0.6;
+}
+
+/* Chat body */
+.chat-body {
+  flex: 1 1;
+  display: flex;
+  padding: 0;
+  overflow-y: auto;
+  flex-direction: column;
+  align-items: stretch;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+/* Chat input area */
+.chat-body form {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.chat-body input[type="text"] {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.chat-body button {
+  padding: 10px 20px;
+  background-color: white;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-chat-roundContainer {
+  padding: 25px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.chat-body .chat-interactions {
+  flex: 1;
+  display: flex;
+}
+
+.chat-body .send-button {
+  color: white;
+}
+
+.chat-body .chat-interactions {
+  flex: 1;
+  flex-direction: column;
+  padding: 0;
+}
+.chat-body .chat-message {
+  padding: 4px 18px;
+  flex: 0 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.chat-body .chat-message .assistant-message {
+  border: 1px solid #D4D4D4;
+  border-radius: 10px;
+  text-align: left;
+  padding: 14px;
+}
+
+.chat-body .chat-message .user-message {
+  border: 1px solid #253237;
+  border-radius: 10px;
+  text-align: right;
+  padding: 14px;
+  color: #253237;
+}
+
+.chat-body .chat-footer {
+  padding: 0 20px;
+  display: flex;
+  align-items: stretch;
+}
+
+.chat-body .chat-footer .input-user-chat-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  margin-bottom: 44px;
+}
+
+  .chat-body .chat-footer .input-text-wrapper {
+    flex: 1;
+    height: 50px;
+    border: 1px solid #1D1B1E;
+    border-radius: 20px;
+    display: flex;
+    align-items: stretch;
+    padding-left: 10px;
+  }
+
+  .chat-body .chat-footer .input-text-wrapper input[type="text"] {
+    border-radius: 25px;
+    border: 0;
+    margin:0;
+  }
+
+  .chat-body .chat-footer .input-text-wrapper input[type="text"]:focus {
+    outline: none;
+  }
+
+  .chat-body .chat-footer .send-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+  }
+  .chat-body .chat-footer button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .chat-body .chat-footer button img {
+    width: 38px;
+    height: 38px;
+  }
