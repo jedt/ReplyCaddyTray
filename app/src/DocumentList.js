@@ -1,3 +1,5 @@
+import React, {useEffect, useState} from 'react';
+
 import './DocumentList.css';
 function displayTags(tags) {
   // for each tags
@@ -9,7 +11,22 @@ function displayTags(tags) {
     );
   });
 }
-export default function DocumentList(documents) {
+export default function DocumentList() {
+  const [documents, setDocuments] = useState([]);
+  useEffect(() => {
+    fetch('http://127.0.0.1:8971/api/data')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => setDocuments(data))
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }, []);
+
   return (
     <table className={"documentsTable"}>
       <thead>
@@ -19,7 +36,7 @@ export default function DocumentList(documents) {
         </tr>
       </thead>
       <tbody>
-      {documents.map(document => (
+      {documents.slice(0, 4).map(document => (
         <tr className={"rowItem"} key={document.file_name}>
           <td>
             <span>{document.file_name}</span>

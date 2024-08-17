@@ -1,20 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import Dashboard from "./Dashboard";
+import Home from "./Home";
+import Settings from "./Settings";
+import ErrorPage from "./error-page";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import './index.css';
-import App from './App';
+//import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// declare retina.js
-const retina = document.createElement('script');
-retina.src = './retina.js';
-document.head.appendChild(retina);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Dashboard/>,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
+      }
+    ]
+  },
+]);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

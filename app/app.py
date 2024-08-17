@@ -1,7 +1,13 @@
+import asyncio
+import json
+import ollama
+import websockets
 from flask import Flask, jsonify, request, send_from_directory, url_for, render_template
 from flask_cors import CORS
 import requests
 import os
+import multiprocessing
+
 # set static folder to build
 app = Flask(__name__, static_folder='build/static', template_folder='build')
 # set images folder to build/images
@@ -110,14 +116,64 @@ def get_data():
             "description": "Frequently asked questions and answers related to LLMs and their usage."
         }
     ])
-    # query = request.args.get('query', 'cats')  # Default to 'nature' if no query provided
-    # url = f"https://pixabay.com/api/?key={PIXABAY_API_KEY}&q={query}&image_type=photo"
-    # response = requests.get(url)
-    #
-    # if response.status_code == 200:
-    #     return jsonify(response.json())
-    # else:
-    #     return jsonify({"error": "Unable to fetch data from Pixabay"}), response.status_code
+
+
+# WebSocket setup
+clients = set()
+
+async def echo(websocket):
+    start_of_response = {
+        "id": "start_of_response"
+    }
+
+    chunk_response = {
+        "id": "chunk_response",
+        "content": ""
+    }
+
+    end_of_response = {
+        "id": "end_of_response"
+    }
+
+    async for message in websocket:
+        # send the start of response message
+        # {promptText, messageHistoryID}
+        print(message)
+        json_dict = json.loads(message)
+        await websocket.send(json.dumps(start_of_response))
+        stream = ollama.chat(
+            model='llama3.1:8b',
+            messages=[{'role': 'user', 'content': json_dict['promptText']}],
+            stream=True,
+        )
+
+        for chunk in stream:
+            await websocket.send(json.dumps({
+                "id": "chunk_response",
+                "content": chunk['message']['content']
+            }))
+
+        await websocket.send(json.dumps(end_of_response))
+
+async def start_websocket_server():
+    async with websockets.serve(echo, "localhost", 8765):
+        await asyncio.Future()  # Run forever
+
+def run_flask():
+    app.run(debug=True, port=8971, use_reloader=False)
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8971)
+    # Run Flask server in a separate process
+    # enable debug mode to auto-reload the server when changes are made
+    flask_process = multiprocessing.Process(target=run_flask)
+    flask_process.start()
+
+    try:
+        asyncio.run(start_websocket_server())
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # Terminate the Flask process when exiting
+        flask_process.terminate()
+        flask_process.join()
