@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-
+import {Image} from "./helpers/ImageHelper";
 import './DocumentList.css';
 function displayTags(tags) {
   // for each tags
@@ -31,15 +31,26 @@ export default function DocumentList() {
     <table className={"documentsTable"}>
       <thead>
         <tr>
-          <th>File Name</th>
-          <th>Tags</th>
+            <th className={"table-icon-th"}>
+                <div className={"table-icon"} style={{"width": "34px"}}></div>
+            </th>
+            <th>File Name</th>
+            <th>Tags</th>
         </tr>
       </thead>
       <tbody>
       {documents.slice(0, 4).map(document => (
         <tr className={"rowItem"} key={document.file_name}>
+            <td className={"table-icon-col"}>
+                <div className={"table-icon-col-wrapper"}>
+                    <span><Image height={20} src={"./images/document-icon.png"} /></span>
+                </div>
+            </td>
           <td>
-            <span>{document.file_name}</span>
+              <div className={"table-filename-col"}>
+                  <div className={"text-label"}>{document.file_name}</div>
+                  <div>March 8, 1980</div>
+              </div>
           </td>
           <td>
             {displayTags(document.tags)}

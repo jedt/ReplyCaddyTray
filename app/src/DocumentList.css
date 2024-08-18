@@ -3,7 +3,6 @@
   border-collapse: collapse;
 }
 .documentsTable thead {
-  border-bottom: 2px solid #DDDDDD;
 }
 .documentsTable thead tr {
   display: flex;
@@ -22,14 +21,49 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  height: 40px;
+  border-bottom: 1px solid #EAEAEA;
+}
+
+.documentsTable td {
+    border-bottom: 1px solid #f2f2f2;
+}
+.documentsTable tr:last-child td {
+    border-bottom: 0;
+}
+.documentsTable td.table-icon-col,
+.documentsTable th.table-icon-th {
+  flex: 0;
+}
+.documentsTable td.table-icon-col {
+  border: 0;
+}
+
+.documentsTable td .table-filename-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.documentsTable td .table-icon-col-wrapper {
+  width: 34px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.documentsTable td .table-filename-col .text-label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #404040;
+  line-height: 1.2;
+  padding: 0 0 4px 0;
 }
 
 .rowItem {
   display: flex;
   align-items: flex-start;
-  border-bottom: 1px solid #DDDDDD;
   padding-left: 10px;
-  padding-right: 10px;
+  padding-right: 0;
   font-size: 12px;
   color: #7B7B7B;
 }
@@ -37,7 +71,7 @@
 .documentsTable td {
   display: flex;
   flex: 1;
-  padding-left: 10px;
+  padding-left: 0;
   padding-right: 10px;
   height: 48px;
   font-size: 12px;
@@ -49,12 +83,14 @@
 .tagWrapper {
   font-family: "Roboto Flex", sans-serif;
   font-size: 11px;
+  font-weight: 600;
   color: #8C8C8C;
   background-color: #DCDCDC;
-  border-radius: 10px;
-  padding: 4px 8px;
+  border-radius: 14px;
+  padding: 0 14px;
   margin: 0 4px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  height: 28px;
 }

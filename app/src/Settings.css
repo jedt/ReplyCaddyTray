@@ -1,1 +1,130 @@
+.mainSection .settings {
+    display: block;
+    border: 1px solid #EAEAEA;
+    padding: 8px;
+    border-radius: 8px;
+    max-width: 60vh;
+}
+.mainSection .mainSectionHeader {
 
+}
+
+.mainSection .titleSection {
+
+}
+
+.mainSection .mainSectionHeader .toolbarItem {
+    height: 38px;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-self: center;
+}
+
+.mainSection .mainSectionHeader .toolbarItem button {
+    flex: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-self: stretch;
+    cursor: pointer;
+    background-color: transparent;
+    border-width: 0;
+}
+
+.mainSection .mainSectionHeader .toolbarItem button:hover {
+    opacity: 0.6;
+}
+
+.mainSection .mainSectionHeader .backWrapper {
+    display: flex;
+    align-self: center;
+    padding: 0 8px;
+}
+
+.mainSection .mainSectionHeader .toolbarItem .toolbarItemText
+{
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-self: center;
+}
+
+.mainSection .mainSectionHeader .titleSection {
+    height: 44px;
+    padding: 0 10px;
+}
+
+.mainSection .mainSectionHeader .titleSection .title {
+    padding: 4px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #222222;
+    display: flex;
+    align-self: center;
+}
+
+.mainSection .mainSectionHeader .titleSection .caption {
+    font-size: 12px;
+    font-weight: 400;
+    display: flex;
+    align-self: center;
+    color: #7C7C7C;
+}
+
+.mainSection .bodySection {
+    padding: 10px;
+}
+
+.mainSection .bodySection .settingsForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.mainSection .bodySection .settingsForm .formItem {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0 0 10px 0;
+}
+
+.mainSection .bodySection .settingsForm .formItem label {
+    color: #7C7C7C;
+    font-size: 14px;
+    padding: 0 0 4px 0;
+}
+
+.mainSection .bodySection .settingsForm .formActionRow {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 0;
+}
+
+.mainSection .bodySection .settingsForm .formActionRow button {
+    padding: 8px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 0;
+    cursor: pointer;
+    background-color: #253237;
+    color: white;
+}
+
+.mainSection .bodySection .settingsForm .formItem .input-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border: 1px solid #EAEAEA;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.mainSection .bodySection .settingsForm .formItem .input-text-wrapper input {
+    border: 0;
+    padding: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    height: 28px;
+}

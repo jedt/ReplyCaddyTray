@@ -75,7 +75,6 @@ p {
 .header-tray-item {
     align-self: center;
     padding: 8px 16px;
-    border: 1px solid #EAEAEA;
 }
 
 .header-tray-btn {
@@ -107,6 +106,7 @@ p {
     color: white;
 }
 .main-wrapper {
+    background-color: #FFFFFF;
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -116,13 +116,11 @@ p {
 }
     .mainSection {
         display: flex;
-        align-items: flex-start;
+        align-items: stretch;
         justify-content: flex-start;
         flex: 4;
-        margin: 18px;
-        padding: 10px 0 0 0;
-        border: 1px solid #EAEAEA;
-        border-radius: 10px;
+        margin: 18px 34px;
+        flex-direction: column;
     }
 
     /*.mainSection {*/
@@ -161,8 +159,8 @@ p {
         align-items: stretch;
         justify-content: flex-start;
         padding-top: 20px;
-        padding-left: 18px;
-        padding-right: 18px
+        padding-left: 10px;
+        padding-right: 10px
     }
         ul.sidebar-nav {
             display: flex;

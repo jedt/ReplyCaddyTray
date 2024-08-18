@@ -1,5 +1,6 @@
 import asyncio
 import json
+import toml
 import ollama
 import websockets
 from flask import Flask, jsonify, request, send_from_directory, url_for, render_template
@@ -7,6 +8,27 @@ from flask_cors import CORS
 import requests
 import os
 import multiprocessing
+
+
+# Load the configuration file
+def load_config(path_file):
+    with open(path_file, 'r') as f:
+        config = toml.load(f)
+    return config
+
+
+def get_default_toml():
+    downloads_file_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+    documents_file_path = os.path.join(os.path.expanduser('~'), 'Documents')
+
+    return f"""
+title = "ReplyCaddy Configuration"
+
+[folders]
+downloads = "{downloads_file_path}"
+documents = "{documents_file_path}"
+"""
+
 
 # set static folder to build
 app = Flask(__name__, static_folder='build/static', template_folder='build')
@@ -21,6 +43,21 @@ def send_images(path):
 @app.route("/")
 def home():
     return send_from_directory('build', 'index.html')
+
+# cors
+@app.route('/api/settings', methods=['GET'])
+def get_settings():
+    # Load the configuration file from the Library/Application Support directory
+    toml_file_path = os.path.join(os.path.expanduser('~'), 'Library/Application Support/ReplyCaddy/config.toml')
+    # if the file does not exist, mkdir and create the file
+    if not os.path.exists(toml_file_path):
+        os.makedirs(os.path.dirname(toml_file_path), exist_ok=True)
+        with open(toml_file_path, 'w') as f:
+            f.write(get_default_toml())
+
+    config = load_config(toml_file_path)
+    return jsonify(config)
+
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
