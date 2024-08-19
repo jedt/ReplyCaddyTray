@@ -447,8 +447,12 @@ def save_chunks_to_chroma_db():
 
         tdqm_chunks = tqdm(chunks, desc=f"{file_name} {document_id}/{total_documents}")
         for i, d in enumerate(tdqm_chunks):
-            if calculate_perplexity(d) < 0.1:
-                print(f"Perplexity is too low for chunk {i} in document {file_name}")
+            ppl = calculate_perplexity(d)
+            if ppl < 0.3:
+                print(
+                    f"Perplexity {ppl} is too low for chunk {i} in document {file_name}:",
+                    d,
+                )
                 continue
 
             collection.add(
@@ -501,7 +505,7 @@ Answer:
 
 
 def rerank_documents(question, documents):
-    model = SentenceTransformer("BAAI/bge-reranker-base")
+    model = SentenceTransformer("all-MiniLM-L6-v2")
     question_embedding = model.encode(question)
     document_embeddings = model.encode(documents)
     # rerank the documents based on the similarity with the question
@@ -593,14 +597,14 @@ if __name__ == "__main__":
         )
 
         results = collection.query(
-            query_embeddings=[response["embedding"]], n_results=4
+            query_embeddings=[response["embedding"]], n_results=5
         )
 
         documents = results["documents"][0]
         context = ""
 
         documents = rerank_documents(question, documents)
-        print("reranked documents", documents)
+        # print("reranked documents", documents)
 
         for i, d in enumerate(documents):
             context += f"{d}\n"
@@ -618,23 +622,23 @@ Query: {question}
 Answer:
 """
 
-        #  print("\n[prompt_with_context]", prompt_with_context)
+        print("\n[prompt_with_context]", prompt_with_context)
 
-        # stream = ollama.chat(
-        #     model="llama3.1:8b",
-        #     options={"temperature": 0},
-        #     messages=[
-        #         {
-        #             "role": "system",
-        #             "content": "You are a super helpful helper",
-        #         },
-        #         {"role": "user", "content": prompt},
-        #     ],
-        #     stream=True,
-        # )
-        #
-        # for item in stream:
-        #     print(item["message"]["content"], end="", flush=True)
+        stream = ollama.chat(
+            model="llama3.1:8b",
+            options={"temperature": 0},
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a super helpful helper",
+                },
+                {"role": "user", "content": prompt_with_context},
+            ],
+            stream=True,
+        )
+
+        for item in stream:
+            print(item["message"]["content"], end="", flush=True)
 
         exit(0)
 
