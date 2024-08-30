@@ -10,10 +10,13 @@ Requirements:
   - llama3.1:8b
   - mxbai-embed-large
 - HuggingFace
-  - MBZUAI/LaMini-GPT-124M
+  - MBZUAI/LaMini-GPT-124M (for perplexity)
 
 ## How it works
 
 Basic RAG + reranker
 - First, it reads your text and PDF files inside your Downloads and Documents for context. Then it saves them to Chromadb.
+- During ETL, the app will check any tokens that exceeded 0.3 of normalized perplexity
+  - `normalized = (perplexity - 1) / 100`
+  - This will help ignore noise. Text from log dumps and unreadable sections of pdf files. These happen to get spam in the retrieval process because they always appear in the results. Like when we enter a query on google and all it returns are spam websites.
 - websockets for the chat ui
