@@ -1,4 +1,4 @@
-<video src="demo/test-recording.mp4" width=800></video>
+[test-recording.webm](https://github.com/user-attachments/assets/f0131324-fcb1-4641-9dc9-3fa3b487e3a9)
 
 # ReplyCaddy Tray
 This is a RAG implementation for Front end ReactJS and Flask backend
