@@ -1,3 +1,5 @@
+<video src="https://github.com/jedt/ReplyCaddyTray/raw/main/demo/test-recording.mp4" width=800></video>
+
 # ReplyCaddy Tray
 This is a RAG implementation for Front end ReactJS and Flask backend
 
