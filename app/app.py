@@ -15,7 +15,7 @@ import chromadb
 import multiprocessing
 import argparse
 import datetime
-from tqdm import trange, tqdm
+from tqdm import tqdm
 import faiss
 import mimetypes
 
@@ -89,7 +89,7 @@ def get_foo():
 
     prompt_with_context = f"""
 You are a super helpful AI assistant. You are asked to answer a question based on the following context information.
-Ensure to answer the Query beginning with the sentence 
+Ensure to answer the Query beginning with the sentence
 "First, here is the most relevant sentence in the context information:"
 Context information are the following text chunks:
 ---------------------
@@ -192,9 +192,15 @@ def get_data():
     cursor = conn.cursor()
     # use page number to get the data
     cursor.execute("SELECT * FROM documents")
-    documents = cursor.fetchall()
+    rows = cursor.fetchall()
+    # Get the column names from cursor.description
+    column_names = [desc[0] for desc in cursor.description]
+
+    # Create a list of dictionaries
+    result = [dict(zip(column_names, row)) for row in rows]
+
     conn.close()
-    return jsonify(documents)
+    return jsonify(result)
 
 
 # WebSocket setup
@@ -213,7 +219,10 @@ async def echo(websocket):
         # {promptText, messageHistoryID}
         json_dict = json.loads(message)
         await websocket.send(json.dumps(start_of_response))
-        prompt_with_rag = get_rag_prompt_on_sqlite_chunks_table(json_dict["promptText"])
+
+        prompt_with_rag = get_rag_prompt_on_sqlite_chunks_table(
+            json_dict["promptText"], file_name="2108.13989.pdf"
+        )
 
         stream = ollama.chat(
             model="llama3.1:8b",
@@ -245,8 +254,8 @@ def check_if_table_exists(table_name, local_db_file_path):
     c = conn.cursor()
     c.execute(
         f"""
-        SELECT count(name) 
-        FROM sqlite_master 
+        SELECT count(name)
+        FROM sqlite_master
         WHERE type='table' AND name='{table_name}'
         """
     )
@@ -469,6 +478,30 @@ def get_text_embedding_dim(input) -> list:
 
 
 def get_rag_prompt_on_sqlite_chunks_table(question, file_name):
+    # question = args.prompt_ollama
+    #
+    # response = ollama.embeddings(prompt=question, model="mxbai-embed-large")
+    # client = chromadb.PersistentClient(path=get_local_db_dir_path())
+    #
+    # collection = create_chunks_persistent_store_if_not_exists(
+    #     get_local_db_dir_path()
+    # )
+    #
+    # results = collection.query(
+    #     query_embeddings=[response["embedding"]], n_results=5
+    # )
+    #
+    # documents = results["documents"][0]
+    # context = ""
+    #
+    # documents = rerank_documents(question, documents)
+    # # print("reranked documents", documents)
+    #
+    # for i, d in enumerate(documents):
+    #     context += f"{d}\n"
+
+    response = ollama.embeddings(prompt=question, model="mxbai-embed-large")
+
     # Load configuration
     toml_file_path = os.path.join(
         os.path.expanduser("~"), "Library/Application Support/ReplyCaddy/config.toml"
@@ -476,22 +509,22 @@ def get_rag_prompt_on_sqlite_chunks_table(question, file_name):
     config = load_config(toml_file_path)
     db_name = config["settings"]["db_name"]
     client = chromadb.PersistentClient(path=get_local_db_dir_path())
-    collection = client.get_collection("document_chunks")
-    print("collection", collection)
+    collection = create_chunks_persistent_store_if_not_exists(get_local_db_dir_path())
 
-    # retrieve the document chunks
-    retrieved_chunks = collection.query(
-        query_texts=[question],
-        n_results=2,
-    )
+    results = collection.query(query_embeddings=[response["embedding"]], n_results=5)
 
-    # Build the context from the retrieved chunks
-    context = "\n".join(retrieved_chunks)
+    documents = results["documents"][0]
+    context = ""
+    documents = rerank_documents(question, documents)
+
+    for i, d in enumerate(documents):
+        context += f"{d}\n"
 
     # Construct the prompt
-    prompt = f"""
+    prompt_with_context = f"""
 You are a super helpful AI assistant. You are asked to answer a question based on the following context information.
-Ensure to answer the Query beginning with the sentence "First, here is the most relevant sentence in the context information:"
+Ensure to answer the Query beginning with the sentence
+"First, here is the most relevant sentence in the context information:"
 Context information are the following text chunks:
 ---------------------
 {context}
@@ -501,7 +534,22 @@ Query: {question}
 Answer:
 """
 
-    return prompt
+    print("\n[prompt_with_context]", prompt_with_context)
+
+    # stream = ollama.chat(
+    #     model="llama3.1:8b",
+    #     options={"temperature": 0},
+    #     messages=[
+    #         {
+    #             "role": "system",
+    #             "content": "You are a super helpful helper",
+    #         },
+    #         {"role": "user", "content": prompt_with_context},
+    #     ],
+    #     stream=True,
+    # )
+
+    return prompt_with_context
 
 
 def rerank_documents(question, documents):
@@ -611,7 +659,7 @@ if __name__ == "__main__":
 
         prompt_with_context = f"""
 You are a super helpful AI assistant. You are asked to answer a question based on the following context information.
-Ensure to answer the Query beginning with the sentence 
+Ensure to answer the Query beginning with the sentence
 "First, here is the most relevant sentence in the context information:"
 Context information are the following text chunks:
 ---------------------

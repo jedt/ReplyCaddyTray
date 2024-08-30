@@ -182,6 +182,19 @@ p {
             flex: 1;
             border: 1px;
             cursor: pointer;
+            display: flex;
+        }
+        .sidebar-btn-container {
+            display: flex;
+            flex: 1
+        }
+        .sidebar-btn-container .buttonImage {
+
+        }
+        .sidebar-btn-container .buttonText {
+            display: flex;
+            align-items: center;
+            text-align: left;
         }
         .sidebar-btn img {
             margin: 0 8px 0 4px;

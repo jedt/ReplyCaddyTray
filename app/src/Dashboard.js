@@ -34,9 +34,13 @@ function buttonClick() {
 function buttonElementHomeActive() {
   return (
     <button className={"sidebar-btn active"} onClick={buttonClick}>
-      <div style={{display: 'flex', alignItems: 'center'}}>
-        <Image width={28} height={28} style={styles.sidebarIcon} src={"./images/home.png"} alt={"home"} />
-        Home
+      <div className={"sidebar-btn-container"}>
+        <div className={"buttonImage"}>
+          <Image width={28} height={28} style={styles.sidebarIcon} src={"./images/home.png"} alt={"home"} />
+        </div>
+        <div className={"buttonText"}>
+          <span>Home</span>
+        </div>
       </div>
     </button>
   );
@@ -221,9 +225,13 @@ function Dashboard() {
                     // route the page using react router to /settings
                     // navigate('/settings');
                   }}>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                      <Image height={33} style={styles.sidebarIcon} src={'./images/document.png'} alt={'Documents'} />
-                      Documents
+                    <div className={"sidebar-btn-container"}>
+                      <div className={"buttonImage"}>
+                        <Image height={33} style={styles.sidebarIcon} src={'./images/document.png'} alt={'Documents'} />
+                      </div>
+                      <div className={"buttonText"}>
+                        <span>Text Documents</span>
+                      </div>
                     </div>
                   </button>
                   {/*{buttonElement("Documents", "./images/document.png")}*/}
@@ -235,7 +243,7 @@ function Dashboard() {
                   }}>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                       <Image height={33} style={styles.sidebarIcon} src={'./images/side-pdf-icon.png'} alt={'Documents'} />
-                      Documents
+                      PDFs
                     </div>
                   </button>
                 </li>
@@ -284,11 +292,11 @@ function Dashboard() {
               <div className={"chat-interactions"}>
                 <div className={"scrollable-list-chat"}>
                   {renderMessageHistoryMap()}
-                  <div className={"chat-message"}>
-                    <div className={"user-message"}>
-                      <span>Provide a simple pie chart</span>
-                    </div>
-                  </div>
+                  {/*<div className={"chat-message"}>*/}
+                  {/*  <div className={"user-message"}>*/}
+                  {/*    <span>Provide a simple pie chart</span>*/}
+                  {/*  </div>*/}
+                  {/*</div>*/}
                   <div style={{"height": "20px"}} ref={messagesEndRef} />
                 </div>
               </div>
